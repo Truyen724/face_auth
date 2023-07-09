@@ -23,8 +23,7 @@ class User extends Authenticatable implements JWTSubject
         'mac_address',
         'regist_at',
         'months_regist',
-        'months_regist',
-        'is_deleted',
+        'deleted_at',
         'address',
         'is_admin',
         'phone'

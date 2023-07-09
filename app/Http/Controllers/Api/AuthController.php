@@ -39,7 +39,7 @@ class AuthController extends BaseApiController
         else
         {
             $token = auth()->guard('api')->login($user);
-            // $token = auth()->login($user);
+           
             return $this->respondWithToken($token);
         }
     }
@@ -94,7 +94,7 @@ class AuthController extends BaseApiController
 
     public function regist(Request $request)
     {
-        try {
+        // try {
             $data = $request->all();
             $data['id'] = generateRandomString();
             $data['salt'] = generateRandomString(5);
@@ -102,32 +102,26 @@ class AuthController extends BaseApiController
             $data['password'] = md5($data['password'] . $data['salt']);
             if ($this->_userService->create($data)) {
                 $user = $this->_userService->getById($data['id']);
-                // if ($user) {
-                //     $token = auth()->guard('api')->login($user);
-                //     // $token = auth()->login($user);
-                //     if (!$token) {
-                //         return $this->errorResponse('Unauthorized', Response::HTTP_UNAUTHORIZED);
-                //     }
-                //     return $this->successResponse([
-                //         'access_token' => $token,
-                //         'expires_in' => env('JWT_TTL')
-                //     ], __('auth.login-success'));
-                // }
-                // return $this->errorResponse(__('user.register-fail'), Response::HTTP_NOT_FOUND);
-
-            return response()->json([
-                'access_token' => $user['name'],
-                'token_type' => 'bearer',
-            ]);
+                if ($user) {
+                    $token = auth()->guard('api')->login($user);
+                    // $token = auth()->login($user);
+                    if (!$token) {
+                        return $this->errorResponse('Unauthorized', Response::HTTP_UNAUTHORIZED);
+                    }
+                    return $this->successResponse([
+                        'access_token' => $token,
+                        'expires_in' => env('JWT_TTL')
+                    ], __('auth.login-success'));
+                }
+                return $this->errorResponse(__('user.register-fail'), Response::HTTP_NOT_FOUND);
             }
-            return $this->errorResponse(__('user.register-fail'), Response::HTTP_NOT_FOUND);
-            // return response()->json([
-            //     'access_token' => $data['password'],
-            //     'token_type' => 'bearer',
-            // ]);
-        } catch (\Throwable $th) {
+            else
+            {
+                return $this->errorResponse(__('user.register-fail'), Response::HTTP_NOT_FOUND);
+            }
 
-            return $this->errorResponse(__('auth.error'), Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        // } catch (\Throwable $th) {
+        //     return $this->errorResponse(__('auth.error'), Response::HTTP_INTERNAL_SERVER_ERROR);
+        // }
     }
 }

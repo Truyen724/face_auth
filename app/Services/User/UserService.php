@@ -17,10 +17,10 @@ class UserService extends BaseService
         $this->_userTokenRepo = $IUserTokenRepository;
     }
 
-    public function login($username, $password)
+    public function login($email, $password)
     {
-        $user = $this->repo->getUserProfileByUsername($username);
-        if ($user && $user->status == $this->STATUS_ACTIVE) {
+        $user = $this->repo->getByEmail($email);
+        if ($user && $user->deleted_at == null) {
             $pass = md5($password . $user->salt);
             if ($user->password === $pass) {
                 return $user;
@@ -87,9 +87,6 @@ class UserService extends BaseService
     public function create($data)
     {
         $query = $this->repo->registUser($data);
-        // if ($query) {
-        //     $query->roles()->attach($data['roles']);
-        // }
         return $query;
     }
 

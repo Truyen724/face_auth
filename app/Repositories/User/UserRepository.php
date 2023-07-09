@@ -30,11 +30,23 @@ class UserRepository extends BaseRepository implements  IUserRepository
      */
     public function registUser($data)
     {
-        return $this->create($data);
+        $new_user = new User();
+        $new_user->id = $data['id'];
+        $new_user->email = $data['email'];
+        $new_user->name = $data['name'];
+        $new_user->password = $data['password'];
+        $new_user->salt = $data['salt'];
+        $new_user->birthday = $data['birthday'];
+        $new_user->regist_at = $data['regist_at'];
+        $new_user->months_regist = $data['months_regist'];
+        $new_user->address = $data['address'];
+        $new_user->phone = $data['phone'];
+        $new_user->save();
+        return $new_user;
     }
     public function getByEmail($email)
     {
-        $query = $this->model->where('email', $email)->frist();
+        $query = $this->model->where('email', $email)->first();
         return $query;
     }
 
