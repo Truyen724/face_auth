@@ -11,7 +11,40 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable;
     protected $table = 'users';
     // Rest omitted for brevity
-    
+    protected $fillable = [
+        'id',
+        'email',
+        'username',
+        'password',
+        'salt',
+        'birthday',
+        'create_at',
+        'update_at',
+        'mac_address',
+        'regist_at',
+        'months_regist',
+        'months_regist',
+        'is_deleted',
+        'address',
+        'is_admin',
+        'phone'
+    ];
+    protected $hidden = [
+        'password',
+        'salt',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+        /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'is_deleted' => 'boolean'
+    ];
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

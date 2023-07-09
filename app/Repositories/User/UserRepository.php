@@ -28,6 +28,10 @@ class UserRepository extends BaseRepository implements  IUserRepository
     /**
      * Get single user by email
      */
+    public function registUser($data)
+    {
+        return $this->create($data);
+    }
     public function getByEmail($email)
     {
         $query = $this->model->where('email', $email)->frist();

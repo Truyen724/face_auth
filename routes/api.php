@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,19 +16,15 @@ use App\Http\Controllers\AuthController;
 
 Route::middleware('api')->group(function (){
 
+    Route::group([
+        'middleware' => 'api',
+        'prefix' => 'auth',
+    ], function ($router) {
 
-Route::group([
-    'middleware' => 'api',
-    'prefix' => 'auth',
-
-], function ($router) {
-
-    Route::post('login', [AuthController::class, 'login']);
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
+        Route::post('login', [AuthController::class, 'login']);
+        Route::post('regist', [AuthController::class, 'regist']);
+        Route::post('refresh', 'AuthController@refresh');
+        Route::post('me', 'AuthController@me');
 
 });
-
-
 });

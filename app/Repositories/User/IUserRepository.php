@@ -15,5 +15,6 @@ interface IUserRepository extends IBaseRepository
     public function checkExistenceByPhone($email);
 
     public function getUserProfileByUsername($username);
+    public function registUser($data);
 
 }
